@@ -1,0 +1,1267 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/14/2010"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ALEXANDER"
+  DTS:CreatorName="BBNT\AlanEa"
+  DTS:DTSID="{79015CE5-A1BD-43AE-92F0-37F1FDD91A06}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3008.28"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="BBDW_FACT_CONSTITUENCYMEASURES"
+  DTS:PackageType="5"
+  DTS:VersionBuild="551"
+  DTS:VersionGUID="{C1647A93-81BB-4392-B909-E2AC7DB063B8}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D131761A-CED7-4B2D-82CA-1DFD60140421}"
+      DTS:ObjectName="BBETL_DB_CONN_DW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2_RPT_BBDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLAP]"
+      DTS:CreationName="MSOLAP100"
+      DTS:DTSID="{6377FFC4-1926-4EBD-B527-B7DB8DBF4C39}"
+      DTS:ObjectName="BBETL_DB_CONN_OLAP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=CAM6ISAACPI01;Provider=MSOLAP.6;Integrated Security=SSPI;Impersonation Level=Impersonate;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLTP]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9BF72A90-DCF2-4C21-9353-F649998C8AC2}"
+      DTS:ObjectName="BBETL_DB_CONN_OLTP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLTP_WRITEBACK]"
+      DTS:CreationName="OLEDB"
+      DTS:Description="OLTP Database connection"
+      DTS:DTSID="{3385204C-8188-498E-8B58-8B0124F96895}"
+      DTS:ObjectName="BBETL_DB_CONN_OLTP_WRITEBACK">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="BBDW_ETL_CONFIG_PATH"
+      DTS:ConfigurationType="5"
+      DTS:CreationName=""
+      DTS:DTSID="{985D4BC2-C8A6-4059-A7D8-49668A91A689}"
+      DTS:ObjectName="BBDW_ETL_CONFIG" />
+    <DTS:Configuration
+      DTS:ConfigurationString="BBDW_ETL_WRITEBACK_CONFIG_PATH"
+      DTS:ConfigurationType="5"
+      DTS:CreationName=""
+      DTS:DTSID="{E5C1C731-632B-468F-9339-73AF274311C3}"
+      DTS:ObjectName="BBDW_ETL_WRITEBACK_CONFIG" />
+  </DTS:Configurations>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5D22D990-44F6-43B0-916B-5A2639CF0779}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DataWindowClose">
+      <DTS:VariableValue
+        DTS:DataType="7">1/1/1753</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F7BB6726-464D-495B-9D60-EC7B25B4C346}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DataWindowOpen">
+      <DTS:VariableValue
+        DTS:DataType="7">1/1/1753</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{040ECB4B-8CCE-4997-8737-5C7C3EA06EAA}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="ETLControlID">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DBDD8C30-4445-4BDB-A350-56824F6D1FB2}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ETLDeploymentFolder">
+      <DTS:VariableValue
+        DTS:DataType="8">c:\Program Files\Microsoft SQL Server\120\DTS\Packages\BBETL\BBInfinity_CRM_SP_DEV_RPT_BBDW\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CF3A956A-F59F-4A88-8D39-C983FC4BC1C9}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="FirstDate">
+      <DTS:VariableValue
+        DTS:DataType="3">19500101</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9EC99105-C991-4DEA-81C9-CF67CEDF5D88}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastDate">
+      <DTS:VariableValue
+        DTS:DataType="3">20491231</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D62077A9-3E3F-4638-9EC0-685BC4265746}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxSurrogateKey">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9CC35640-D403-4941-9D81-DE15245E77A2}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageListFile">
+      <DTS:VariableValue
+        DTS:DataType="8">BBDW_PackageList.txt</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{15D1E911-41C4-44C7-B4E1-495BBDF0CA1A}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountAll">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{71ACCF2B-B9B9-4FC7-9CEE-AA63908B641B}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountNew">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{87228A71-2815-4933-989F-D161108206B8}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountUpdated">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1D5283BC-56C7-4E3C-B85C-6933852732DA}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceDimID">
+      <DTS:VariableValue
+        DTS:DataType="3">1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DCAF8E9C-4442-4A31-8B33-AA13225C8ABC}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="UDMDatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">BBInfinity_CRM_SP_DEV_RPT_BBDW_UDM</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:LoggingOptions
+    DTS:FilterKind="0"
+    DTS:LoggingMode="2">
+    <DTS:Property
+      DTS:DataType="8"
+      DTS:Name="EventFilter">5,7,OnError,13,OnInformation,25,OnPipelinePostEndOfRowset,13,OnPostExecute,12,OnPreExecute</DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnError"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnInformation"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPipelinePostEndOfRowset"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPostExecute"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPreExecute"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnProgress"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+  </DTS:LoggingOptions>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\ETL Post-Processing"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{F535FEE5-4E09-4CE5-B8CF-7CA324A31C1A}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="ETL Post-Processing">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\ETL Post-Processing\Mark LoadStatus  Complete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{E2EB916E-635C-48AD-863A-B010A6577C98}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Mark LoadStatus  Complete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D131761A-CED7-4B2D-82CA-1DFD60140421}"
+              SQLTask:SqlStatementSource="UPDATE BBDW.ETLCONTROL&#xA;set&#xA;LOADISCOMPLETE=1,&#xA;ETLENDTIME=SYSDATETIMEOFFSET(),&#xA;NUMROWSADDED=?,&#xA;NUMROWSUPDATED=?&#xA;where &#xA;ETLCONTROLID=?&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::RowCountNew"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::RowCountUpdated"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="2"
+                SQLTask:DtsVariableName="User::ETLControlID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Rows"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{F4833E8D-2502-4FC9-9F03-757164B08E52}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Rows">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Adding Indices"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Adding Indices"
+          DTS:DTSID="{4560D0F9-A29C-4A7C-AF38-D4B69866CB9E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Adding Indices"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server 2008; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D131761A-CED7-4B2D-82CA-1DFD60140421}"
+              SQLTask:SqlStatementSource="exec [BBDW].[CREATE_OR_DROP_INDICES] 'BBDW', 'FACT_CONSTITUENCYMEASURES_EXT', 1, 1;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Load Changed Rows"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{C75B4DE5-A2C7-4312-8819-F27B759C11E0}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Load Changed Rows"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v9; (C) 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0"
+            DTS:LoggingMode="2" />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              engineThreads="5"
+              version="1">
+              <components>
+                <component
+                  refId="Package\Load Rows\Load Changed Rows\Derived Columns"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Columns"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Load Changed Rows\Derived Columns.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Load Rows\Load Changed Rows\Derived Columns.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ISINCLUDED]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ISINCLUDED]"
+                          name="ISINCLUDED"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">1</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">1</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]"
+                          name="SOURCEDIMID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::SourceDimID]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::SourceDimID]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]"
+                          name="ETLCONTROLID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::ETLControlID]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::ETLControlID]</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Load Rows\Load Changed Rows\Derived Columns.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Load Changed Rows\Destination table"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Destination table"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[BBDW].[FACT_CONSTITUENCYMEASURES_EXT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destinaton. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Load Changed Rows\Destination table.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].Columns[ETLCONTROLID]"
+                          cachedDataType="i4"
+                          cachedName="ETLCONTROLID"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[ETLCONTROLID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].Columns[SOURCEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="SOURCEDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[SOURCEDIMID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].Columns[ISINCLUDED]"
+                          cachedDataType="i4"
+                          cachedName="ISINCLUDED"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[ISINCLUDED]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output].Columns[ISINCLUDED]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].Columns[CONSTITUENTDIMID]"
+                          cachedDataType="i4"
+                          cachedName="CONSTITUENTDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[CONSTITUENTDIMID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[CONSTITUENTDIMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].Columns[MOSTRECENTCONSTITUENCYDIMID]"
+                          cachedDataType="i4"
+                          cachedName="MOSTRECENTCONSTITUENCYDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[MOSTRECENTCONSTITUENCYDIMID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCYDIMID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[ISINCLUDED]"
+                          dataType="bool"
+                          name="ISINCLUDED" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[ETLCONTROLID]"
+                          dataType="i4"
+                          name="ETLCONTROLID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[SOURCEDIMID]"
+                          dataType="ui1"
+                          name="SOURCEDIMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[CONSTITUENCYMEASURESFACTID]"
+                          dataType="i4"
+                          name="CONSTITUENCYMEASURESFACTID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[MOSTRECENTCONSTITUENCYDIMID]"
+                          dataType="i4"
+                          name="MOSTRECENTCONSTITUENCYDIMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input].ExternalColumns[CONSTITUENTDIMID]"
+                          dataType="i4"
+                          name="CONSTITUENTDIMID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Destination table.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Destination table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Destination table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Destination table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Load Changed Rows\Row Count"
+                  componentClassID="Microsoft.RowCount"
+                  contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+                  name="Row Count">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable to hold the row count."
+                      name="VariableName">User::RowCountNew</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Load Changed Rows\Row Count.Inputs[Row Count Input 1]"
+                      hasSideEffects="true"
+                      name="Row Count Input 1">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Row Count.Outputs[Row Count Output 1]"
+                      name="Row Count Output 1"
+                      synchronousInputId="Package\Load Rows\Load Changed Rows\Row Count.Inputs[Row Count Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Load Changed Rows\Source query"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Source query"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[ADDEDTABLES]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">with MOSTRECENTRANKINGS(MOSTRECENTDATERANK, CONSTITUENTDIMID, CONSTITUENCYDIMID) as
+(
+  select
+    -- rank the most recent constituency "FROMDATE" value for each constituent
+    row_number() over (partition by fc.CONSTITUENTDIMID order by fc.FROMDATE desc) as MOSTRECENTFROMDATE,
+
+    fc.CONSTITUENTDIMID,
+    fc.CONSTITUENCYDIMID
+  from bbdw.FACT_CONSTITUENCY fc 
+  join bbdw.DIM_CONSTITUENCY dc on dc.CONSTITUENCYDIMID = FC.CONSTITUENCYDIMID
+)
+select
+  CONSTITUENTDIMID,
+  CONSTITUENCYDIMID as MOSTRECENTCONSTITUENCYDIMID
+from MOSTRECENTRANKINGS
+where MOSTRECENTDATERANK = 1 -- we want the most recent one for each constituent</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"Parameter0",{F7BB6726-464D-495B-9D60-EC7B25B4C346};"Parameter1",{5D22D990-44F6-43B0-916B-5A2639CF0779};"Parameter2",{F7BB6726-464D-495B-9D60-EC7B25B4C346};"Parameter3",{5D22D990-44F6-43B0-916B-5A2639CF0779};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Load Changed Rows\Source query.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[CONSTITUENTDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].ExternalColumns[CONSTITUENTDIMID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[CONSTITUENTDIMID]"
+                          name="CONSTITUENTDIMID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCYDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].ExternalColumns[MOSTRECENTCONSTITUENCYDIMID]"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCYDIMID]"
+                          name="MOSTRECENTCONSTITUENCYDIMID"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].ExternalColumns[CONSTITUENTDIMID]"
+                          dataType="i4"
+                          name="CONSTITUENTDIMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output].ExternalColumns[MOSTRECENTCONSTITUENCYDIMID]"
+                          dataType="i4"
+                          name="MOSTRECENTCONSTITUENCYDIMID" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[CONSTITUENTDIMID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[CONSTITUENTDIMID]"
+                          name="CONSTITUENTDIMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[MOSTRECENTCONSTITUENCYDIMID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[MOSTRECENTCONSTITUENCYDIMID]"
+                          name="MOSTRECENTCONSTITUENCYDIMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Load Rows\Load Changed Rows.Paths[Derived Column Output]"
+                  endId="Package\Load Rows\Load Changed Rows\Destination table.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Load Rows\Load Changed Rows\Derived Columns.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Load Rows\Load Changed Rows.Paths[OLE DB Source Output]"
+                  endId="Package\Load Rows\Load Changed Rows\Row Count.Inputs[Row Count Input 1]"
+                  name="OLE DB Source Output"
+                  startId="Package\Load Rows\Load Changed Rows\Source query.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Load Rows\Load Changed Rows.Paths[Row Count Output 1]"
+                  endId="Package\Load Rows\Load Changed Rows\Derived Columns.Inputs[Derived Column Input]"
+                  name="Row Count Output 1"
+                  startId="Package\Load Rows\Load Changed Rows\Row Count.Outputs[Row Count Output 1]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Truncate Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Truncate Staging"
+          DTS:DTSID="{E2E73FBA-9AB6-4262-BEE3-B86DA0E48D98}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server 2008; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D131761A-CED7-4B2D-82CA-1DFD60140421}"
+              SQLTask:SqlStatementSource="exec [BBDW].[CREATE_OR_DROP_INDICES] 'BBDW', 'FACT_CONSTITUENCYMEASURES_EXT', 0, 0;&#xA;&#xA;truncate table BBDW.FACT_CONSTITUENCYMEASURES_EXT;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load Rows.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{3C0BDDF6-76FB-41FF-9AE5-FB91E358DFA4}"
+          DTS:From="Package\Load Rows\Load Changed Rows"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Load Rows\Adding Indices" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load Rows.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{EF953D02-5AC7-4C4F-9403-0FD01AAF7A7A}"
+          DTS:From="Package\Load Rows\Truncate Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Load Rows\Load Changed Rows" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Pre Processing"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{53D5BDDE-7A9A-4E7A-8439-B4EBFD577B42}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Pre Processing">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Pre Processing\Set ETL Run Variables"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Sets data window open and close datetime variables as well as the ETL Control ID"
+          DTS:DTSID="{0046CE4A-70DC-4538-B170-7A3A18AA2388}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Set ETL Run Variables"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{D131761A-CED7-4B2D-82CA-1DFD60140421}"
+              SQLTask:SqlStatementSource="EXEC BBDW.USP_ETL_BEGINLOAD &#xA;@CurrentDataWindowClose =NULL,&#xA;@ISPARENT=0,&#xA;@SSISPACKAGENAME =?,&#xA;@SSISPACKAGEPATH =?,&#xA;@SSISSTARTTIME =?,&#xA;@SSISUSERNAME=?,&#xA;@SSISMACHINENAME =?,&#xA;@SSISEXECUTIONINSTANCEGUID=?,&#xA;@CLEAR_INCOMPLETE_LOADS=0"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="ETLCONTROLID"
+                SQLTask:DtsVariableName="User::ETLControlID" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="DATAWINDOWOPEN"
+                SQLTask:DtsVariableName="User::DataWindowOpen" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="DATAWINDOWCLOSE"
+                SQLTask:DtsVariableName="User::DataWindowClose" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="VALIDSTARTDATEDIMID"
+                SQLTask:DtsVariableName="User::FirstDate" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="VALIDENDDATEDIMID"
+                SQLTask:DtsVariableName="User::LastDate" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="System::PackageName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::ETLDeploymentFolder"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="2"
+                SQLTask:DtsVariableName="System::StartTime"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="7"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="3"
+                SQLTask:DtsVariableName="System::UserName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="4"
+                SQLTask:DtsVariableName="System::MachineName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="5"
+                SQLTask:DtsVariableName="System::ExecutionInstanceGUID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="72"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{82291337-F472-4372-A6C2-C1BFE091B9C9}"
+      DTS:From="Package\Pre Processing"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load Rows" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{681A88DB-0EC6-46C0-90E6-90482914BA35}"
+      DTS:From="Package\Load Rows"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\ETL Post-Processing" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="155,54"
+          Id="Package\ETL Post-Processing\Mark LoadStatus  Complete"
+          TopLeft="18.6037735849057,8.47169811320759" />
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="188,117"
+          Size="188,161"
+          Id="Package\ETL Post-Processing"
+          TopLeft="742.584905660377,314.103773584906" />
+        <NodeLayout
+          Size="156,44"
+          Id="Package\Load Rows\Adding Indices"
+          TopLeft="27.5849056603774,153.283018867925" />
+        <NodeLayout
+          Size="168,44"
+          Id="Package\Load Rows\Load Changed Rows"
+          TopLeft="19.3207547169811,81.4905660377358" />
+        <NodeLayout
+          Size="152,42"
+          Id="Package\Load Rows\Truncate Table"
+          TopLeft="24.8679245283019,12.8490566037736" />
+        <EdgeLayout
+          Id="Package\Load Rows.PrecedenceConstraints[Constraint 1]"
+          TopLeft="102.094339622641,54.8490566037736">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26.6415094339622"
+              Start="0,0"
+              End="0,19.1415094339622">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.1415094339622" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows.PrecedenceConstraints[Constraint]"
+          TopLeft="104.452830188679,125.490566037736">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.7924528301892"
+              Start="0,0"
+              End="0,20.2924528301892">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.2924528301892" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="209,219"
+          Size="209,263"
+          Id="Package\Load Rows"
+          TopLeft="441.811320754717,271.028301886792" />
+        <NodeLayout
+          Size="164,44"
+          Id="Package\Pre Processing\Set ETL Run Variables"
+          TopLeft="17.5471698113208,12.4716981132075" />
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="198,92"
+          Size="198,136"
+          Id="Package\Pre Processing"
+          TopLeft="186,336.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="384,403.514150943396">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="57.811320754717,0"
+              Start="0,0"
+              End="50.311320754717,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="50.311320754717,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="650.811320754717,398.566037735849">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="91.77358490566,0"
+              Start="0,0"
+              End="84.27358490566,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="84.27358490566,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load Rows\Load Changed Rows">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="143,42"
+          Id="Package\Load Rows\Load Changed Rows\Source query"
+          TopLeft="34.5,35.5" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\Load Rows\Load Changed Rows\Destination table"
+          TopLeft="37.5000000000001,240.5" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Load Rows\Load Changed Rows\Derived Columns"
+          TopLeft="32,173" />
+        <EdgeLayout
+          Id="Package\Load Rows\Load Changed Rows.Paths[Derived Column Output]"
+          TopLeft="115,215">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25.5"
+              Start="0,0"
+              End="0,18">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="132,42"
+          Id="Package\Load Rows\Load Changed Rows\Row Count"
+          TopLeft="42,105" />
+        <EdgeLayout
+          Id="Package\Load Rows\Load Changed Rows.Paths[Row Count Output 1]"
+          TopLeft="110.25,147">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26"
+              Start="0,0"
+              End="0,18.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows\Load Changed Rows.Paths[OLE DB Source Output]"
+          TopLeft="107,77.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.5"
+              Start="0,0"
+              End="0,20">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Rows\Load Changed Rows\Source query">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Rows\Load Changed Rows\Destination table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,2368 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/14/2010"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ALEXANDER"
+  DTS:CreatorName="BBNT\AlanEa"
+  DTS:DTSID="{7CDF046D-E584-46EC-8A37-34E92C6227BA}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3008.28"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="BBDW_FACT_MOSTRECENTCONSITTUENCY_EXT"
+  DTS:PackageType="5"
+  DTS:VersionBuild="601"
+  DTS:VersionGUID="{8F7CAC74-2074-4BE9-9E2D-9A1927CAC870}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{99D56C28-B314-42F4-B9EC-22E9E0DBAF37}"
+      DTS:ObjectName="BBETL_DB_CONN_DW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2_RPT_BBDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLAP]"
+      DTS:CreationName="MSOLAP100"
+      DTS:DTSID="{C45F6020-AB8D-4E30-A249-0350A6E938B1}"
+      DTS:ObjectName="BBETL_DB_CONN_OLAP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=CAM6ISAACPI01;Provider=MSOLAP.6;Integrated Security=SSPI;Impersonation Level=Impersonate;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLTP]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{80D4C3FA-DBAF-44AC-A6F8-478B9F71CC99}"
+      DTS:ObjectName="BBETL_DB_CONN_OLTP">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2_RPT_BBDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BBETL_DB_CONN_OLTP_WRITEBACK]"
+      DTS:CreationName="OLEDB"
+      DTS:Description="OLTP Database connection"
+      DTS:DTSID="{2C256A25-F07D-4122-A494-7CE5B719151C}"
+      DTS:ObjectName="BBETL_DB_CONN_OLTP_WRITEBACK">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=REM6KEEGANWA2;Initial Catalog=Sample2;Provider=SQLNCLI11.1;Integrated Security=SSPI;Packet Size=32767;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="BBDW_ETL_CONFIG_PATH"
+      DTS:ConfigurationType="5"
+      DTS:CreationName=""
+      DTS:DTSID="{BF95443C-2FF8-4212-87CE-C97B7393B867}"
+      DTS:ObjectName="BBDW_ETL_CONFIG" />
+    <DTS:Configuration
+      DTS:ConfigurationString="BBDW_ETL_WRITEBACK_CONFIG_PATH"
+      DTS:ConfigurationType="5"
+      DTS:CreationName=""
+      DTS:DTSID="{4EA7F60F-41A9-4F57-AA7A-7BE686FF9840}"
+      DTS:ObjectName="BBDW_ETL_WRITEBACK_CONFIG" />
+  </DTS:Configurations>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F569ED53-BA72-44C3-A91B-ECF96F838239}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DataWindowClose">
+      <DTS:VariableValue
+        DTS:DataType="7">1/1/1753</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E8BF9C95-1566-4A8D-86BB-8BACECF5ACB1}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="DataWindowOpen">
+      <DTS:VariableValue
+        DTS:DataType="7">1/1/1753</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{83C7C526-C2E4-4919-B4EA-1958915BB191}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="ETLControlID">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{30FDEB6E-9342-4C6A-9EC8-0F827A38EC4D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ETLDeploymentFolder">
+      <DTS:VariableValue
+        DTS:DataType="8">c:\Program Files\Microsoft SQL Server\120\DTS\Packages\BBETL\BBInfinity_CRM_SP_DEV_RPT_BBDW\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{819C7B87-E7DD-44C3-A2DB-4360EA0A8A1C}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="FirstDate">
+      <DTS:VariableValue
+        DTS:DataType="3">19500101</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E54A1B52-EF37-486D-AA3F-82ED968461B3}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastDate">
+      <DTS:VariableValue
+        DTS:DataType="3">20491231</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BAD27BCA-CEC0-40F9-A8BF-03E053910C79}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxSurrogateKey">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{166F14C0-4548-4515-9FD7-09BE06DF6303}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageListFile">
+      <DTS:VariableValue
+        DTS:DataType="8">BBDW_PackageList.txt</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{28AB8450-40AB-435E-BF41-37B0995F5534}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountAll">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8E0BBC68-30D0-439D-8FE7-32307243DE20}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountNew">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ED3C9F8C-4B25-46B7-A896-F4F4318BCC4D}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCountUpdated">
+      <DTS:VariableValue
+        DTS:DataType="3">-1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F2D91A47-22C7-4330-BCB1-7E0E7F919EAC}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceDimID">
+      <DTS:VariableValue
+        DTS:DataType="3">1</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C23AE8C7-BC6B-4D78-AEBC-528531DB0DED}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="UDMDatabaseName">
+      <DTS:VariableValue
+        DTS:DataType="8">BBInfinity_CRM_SP_DEV_RPT_BBDW_UDM</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:LoggingOptions
+    DTS:FilterKind="0"
+    DTS:LoggingMode="2">
+    <DTS:Property
+      DTS:DataType="8"
+      DTS:Name="EventFilter">5,7,OnError,13,OnInformation,25,OnPipelinePostEndOfRowset,13,OnPostExecute,12,OnPreExecute</DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnError"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnInformation"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPipelinePostEndOfRowset"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPostExecute"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnPreExecute"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnProgress"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+  </DTS:LoggingOptions>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\ETL Post-Processing"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{8C012B7D-C98F-4641-857A-DC7B35BF8B9F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="ETL Post-Processing">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\ETL Post-Processing\Mark LoadStatus  Complete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{BF7F64A4-EBDB-465F-A694-9F9D9660F235}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Mark LoadStatus  Complete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{99D56C28-B314-42F4-B9EC-22E9E0DBAF37}"
+              SQLTask:SqlStatementSource="UPDATE BBDW.ETLCONTROL&#xA;set&#xA;LOADISCOMPLETE=1,&#xA;ETLENDTIME=SYSDATETIMEOFFSET(),&#xA;NUMROWSADDED=?,&#xA;NUMROWSUPDATED=?&#xA;where &#xA;ETLCONTROLID=?&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::RowCountNew"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::RowCountUpdated"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="2"
+                SQLTask:DtsVariableName="User::ETLControlID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Rows"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6164F439-85C5-41B4-BBF1-03DDF309799C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Rows">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Add Indices"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Adding Indices"
+          DTS:DTSID="{3D3C434B-0DC0-458E-9503-9C2D304F4AB0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Add Indices"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server 2008; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{99D56C28-B314-42F4-B9EC-22E9E0DBAF37}"
+              SQLTask:SqlStatementSource="exec [BBDW].[CREATE_OR_DROP_INDICES] 'BBDW', 'FACT_CONSTITUENCYMEASURES_EXT', 1, 1;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Remove Indices"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Truncate Staging"
+          DTS:DTSID="{8ED37B09-4B21-448D-A732-7C7E7D680066}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Remove Indices"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server 2008; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{99D56C28-B314-42F4-B9EC-22E9E0DBAF37}"
+              SQLTask:SqlStatementSource="exec [BBDW].[CREATE_OR_DROP_INDICES] 'BBDW', 'FACT_MOSTRECENTCONSTITUENCY_EXT', 0, 0;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load Rows\Update Table"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{32BE7FB7-8EE1-47E2-B19E-600F599877C9}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update Table"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Load Rows\Update Table\Add new record"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Add new record"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[BBDW].[FACT_MOSTRECENTCONSTITUENCY_EXT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Update Table\Add new record.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[CONSTITUENTSYSTEMID]"
+                          cachedDataType="guid"
+                          cachedName="CONSTITUENTSYSTEMID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[CONSTITUENTSYSTEMID]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CONSTITUENTSYSTEMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="MOSTRECENTCONSTITUENCY"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[MOSTRECENTCONSTITUENCY]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[MOSTRECENTCONSTITUENCY]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[ISINCLUDED]"
+                          cachedDataType="i4"
+                          cachedName="ISINCLUDED"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ISINCLUDED]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ISINCLUDED]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[SOURCEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="SOURCEDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[SOURCEDIMID]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[SOURCEDIMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[ETLCONTROLID]"
+                          cachedDataType="i4"
+                          cachedName="ETLCONTROLID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ETLCONTROLID]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ETLCONTROLID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[CURRENTDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="CURRENTDATEDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[STARTDATEDIMID]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATEDIMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].Columns[BLANKDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="BLANKDATEDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ENDDATEDIMID]"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[BLANKDATEDIMID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[MOSTRECENTCONSTITUENCYFACTID]"
+                          dataType="i4"
+                          name="MOSTRECENTCONSTITUENCYFACTID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          length="100"
+                          name="MOSTRECENTCONSTITUENCY" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[CONSTITUENTSYSTEMID]"
+                          dataType="guid"
+                          name="CONSTITUENTSYSTEMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[STARTDATEDIMID]"
+                          dataType="i4"
+                          name="STARTDATEDIMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ENDDATEDIMID]"
+                          dataType="i4"
+                          name="ENDDATEDIMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ISINCLUDED]"
+                          dataType="bool"
+                          name="ISINCLUDED" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[ETLCONTROLID]"
+                          dataType="i4"
+                          name="ETLCONTROLID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input].ExternalColumns[SOURCEDIMID]"
+                          dataType="ui1"
+                          name="SOURCEDIMID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Add new record.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Add new record.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Add new record.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Add new record.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Derived columns"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived columns"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Derived columns.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Derived columns.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ISINCLUDED]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ISINCLUDED]"
+                          name="ISINCLUDED"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">1</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">1</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]"
+                          name="SOURCEDIMID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::SourceDimID]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::SourceDimID]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]"
+                          name="ETLCONTROLID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::ETLControlID]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::ETLControlID]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]"
+                          name="CURRENTDATE"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">(DT_DBDATE)(@[User::DataWindowOpen])</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(DT_DBDATE)(@[User::DataWindowOpen])</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Derived columns.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\End date old record"
+                  componentClassID="Microsoft.OLEDBCommand"
+                  contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+                  description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+                  name="End date old record"
+                  usesDispositions="true"
+                  version="2">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">update bbdw.FACT_MOSTRECENTCONSTITUENCY_EXT
+set ENDDATEDIMID = ?
+where MOSTRECENTCONSTITUENCYFACTID = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Update Table\End date old record.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input]"
+                      errorOrTruncationOperation="Command Execution"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Command Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].Columns[CURRENTDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="CURRENTDATEDIMID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[CURRENTDATEDIMID]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          cachedDataType="i4"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCYFACTID"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                          dataType="i4"
+                          name="Param_0">
+                          <properties>
+                            <property
+                              dataType="System.Int32"
+                              description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                              name="DBParamInfoFlags">81</property>
+                          </properties>
+                        </externalMetadataColumn>
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                          dataType="i4"
+                          name="Param_1">
+                          <properties>
+                            <property
+                              dataType="System.Int32"
+                              description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                              name="DBParamInfoFlags">81</property>
+                          </properties>
+                        </externalMetadataColumn>
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Output]"
+                      exclusionGroup="1"
+                      name="OLE DB Command Output"
+                      synchronousInputId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Command Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Find Dim IDs for dates"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Find Dim IDs for dates"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Inputs[Derived Column Input].Columns[CURRENTDATE]"
+                          cachedDataType="dbDate"
+                          cachedName="CURRENTDATE"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Find Dim IDs for dates.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[CURRENTDATEDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[CURRENTDATEDIMID]"
+                          name="CURRENTDATEDIMID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">([ISNULL](#{Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]}) ? 0 : ([YEAR](#{Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]}) * 10000) + ([MONTH](#{Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]}) * 100) + [DAY](#{Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]}))</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(ISNULL(CURRENTDATE) ? 0 : (YEAR(CURRENTDATE) * 10000) + (MONTH(CURRENTDATE) * 100) + DAY(CURRENTDATE))</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[BLANKDATEDIMID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[BLANKDATEDIMID]"
+                          name="BLANKDATEDIMID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">0</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">0</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Find Dim IDs for dates.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Find latest &quot;most recent constituency&quot; record for each constituent"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select 
+	CONSTITUENTSYSTEMID          as CONSTITUENTSYSTEMID, 
+  MOSTRECENTCONSTITUENCYFACTID as EXISTING_MOSTRECENTCONSTITUENCYFACTID,  
+	MOSTRECENTCONSTITUENCY       as EXISTING_MOSTRECENTCONSTITUENCY
+from BBDW.FACT_MOSTRECENTCONSTITUENCY_EXT
+where ENDDATEDIMID = 0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select 
+	CONSTITUENTSYSTEMID          as CONSTITUENTSYSTEMID, 
+  MOSTRECENTCONSTITUENCYFACTID as EXISTING_MOSTRECENTCONSTITUENCYFACTID,  
+	MOSTRECENTCONSTITUENCY       as EXISTING_MOSTRECENTCONSTITUENCY
+from BBDW.FACT_MOSTRECENTCONSTITUENCY_EXT
+where ENDDATEDIMID = 0) [refTable]
+where [refTable].[CONSTITUENTSYSTEMID] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CONSTITUENTSYSTEMID" dataType="DT_GUID" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="EXISTING_MOSTRECENTCONSTITUENCYFACTID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="EXISTING_MOSTRECENTCONSTITUENCY" dataType="DT_WSTR" length="100" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input].Columns[CONSTITUENTSYSTEMID]"
+                          cachedDataType="guid"
+                          cachedName="CONSTITUENTSYSTEMID"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">CONSTITUENTSYSTEMID</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Copy Column"
+                          length="100"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          name="EXISTING_MOSTRECENTCONSTITUENCY"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">EXISTING_MOSTRECENTCONSTITUENCY</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          name="EXISTING_MOSTRECENTCONSTITUENCYFACTID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">EXISTING_MOSTRECENTCONSTITUENCYFACTID</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Retrieve most recent constituencies for each constituent"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">-- find the most recent constituency for each constituent
+;with CONSTITUENCYRANKINGS as
+(
+  select
+      -- rank the most recent constituency "FROMDATE" value for each constituent
+    row_number() over (partition by fc.CONSTITUENTSYSTEMID order by fc.FROMDATEDIMID desc) as MOSTRECENTDATERANK,      
+    fc.CONSTITUENTSYSTEMID, 
+    dc.CONSTITUENCY
+
+  from bbdw.FACT_CONSTITUENCY fc 
+  join bbdw.DIM_CONSTITUENCY dc on dc.CONSTITUENCYDIMID = FC.CONSTITUENCYDIMID
+)
+select 
+  CONSTITUENTSYSTEMID, 
+  CONSTITUENCY as MOSTRECENTCONSTITUENCY
+from CONSTITUENCYRANKINGS
+where MOSTRECENTDATERANK = 1 -- retrieve the most recent constituency for each constituent</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      connectionManagerRefId="Package.ConnectionManagers[BBETL_DB_CONN_DW]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]"
+                          dataType="guid"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].ExternalColumns[CONSTITUENTSYSTEMID]"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]"
+                          name="CONSTITUENTSYSTEMID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].ExternalColumns[MOSTRECENTCONSTITUENCY]"
+                          length="100"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]"
+                          name="MOSTRECENTCONSTITUENCY"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].ExternalColumns[CONSTITUENTSYSTEMID]"
+                          dataType="guid"
+                          name="CONSTITUENTSYSTEMID" />
+                        <externalMetadataColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].ExternalColumns[MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          length="100"
+                          name="MOSTRECENTCONSTITUENCY" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[CONSTITUENTSYSTEMID]"
+                          dataType="guid"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[CONSTITUENTSYSTEMID]"
+                          name="CONSTITUENTSYSTEMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[MOSTRECENTCONSTITUENCY]"
+                          name="MOSTRECENTCONSTITUENCY" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Union All"
+                  componentClassID="Microsoft.UnionAll"
+                  contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+                  name="Union All"
+                  version="1">
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1]"
+                      name="Union All Input 1">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[CONSTITUENTSYSTEMID]"
+                          cachedDataType="guid"
+                          cachedName="CONSTITUENTSYSTEMID"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CONSTITUENTSYSTEMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[MOSTRECENTCONSTITUENCY]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCY]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          cachedDataType="i4"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCYFACTID"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[ISINCLUDED]"
+                          cachedDataType="i4"
+                          cachedName="ISINCLUDED"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ISINCLUDED]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ISINCLUDED]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[SOURCEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="SOURCEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[SOURCEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[ETLCONTROLID]"
+                          cachedDataType="i4"
+                          cachedName="ETLCONTROLID"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ETLCONTROLID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[CURRENTDATE]"
+                          cachedDataType="dbDate"
+                          cachedName="CURRENTDATE"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATE]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[CURRENTDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="CURRENTDATEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[CURRENTDATEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1].Columns[BLANKDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="BLANKDATEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[BLANKDATEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[BLANKDATEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2]"
+                      hasSideEffects="true"
+                      name="Union All Input 2">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[CONSTITUENTSYSTEMID]"
+                          cachedDataType="guid"
+                          cachedName="CONSTITUENTSYSTEMID"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[CONSTITUENTSYSTEMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CONSTITUENTSYSTEMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[MOSTRECENTCONSTITUENCY]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCY]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          cachedDataType="i4"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCYFACTID"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[ISINCLUDED]"
+                          cachedDataType="i4"
+                          cachedName="ISINCLUDED"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ISINCLUDED]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ISINCLUDED]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[SOURCEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="SOURCEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[SOURCEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[SOURCEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[ETLCONTROLID]"
+                          cachedDataType="i4"
+                          cachedName="ETLCONTROLID"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[ETLCONTROLID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ETLCONTROLID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[CURRENTDATE]"
+                          cachedDataType="dbDate"
+                          cachedName="CURRENTDATE"
+                          lineageId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output].Columns[CURRENTDATE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATE]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[CURRENTDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="CURRENTDATEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[CURRENTDATEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2].Columns[BLANKDATEDIMID]"
+                          cachedDataType="i4"
+                          cachedName="BLANKDATEDIMID"
+                          lineageId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output].Columns[BLANKDATEDIMID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[BLANKDATEDIMID]}</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 3]"
+                      dangling="true"
+                      hasSideEffects="true"
+                      name="Union All Input 3">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1]"
+                      name="Union All Output 1">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CONSTITUENTSYSTEMID]"
+                          dataType="guid"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CONSTITUENTSYSTEMID]"
+                          name="CONSTITUENTSYSTEMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[MOSTRECENTCONSTITUENCY]"
+                          name="MOSTRECENTCONSTITUENCY" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          name="EXISTING_MOSTRECENTCONSTITUENCY" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          name="EXISTING_MOSTRECENTCONSTITUENCYFACTID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ISINCLUDED]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ISINCLUDED]"
+                          name="ISINCLUDED" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[SOURCEDIMID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[SOURCEDIMID]"
+                          name="SOURCEDIMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ETLCONTROLID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[ETLCONTROLID]"
+                          name="ETLCONTROLID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATE]"
+                          dataType="dbDate"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATE]"
+                          name="CURRENTDATE" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATEDIMID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[CURRENTDATEDIMID]"
+                          name="CURRENTDATEDIMID" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[BLANKDATEDIMID]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1].Columns[BLANKDATEDIMID]"
+                          name="BLANKDATEDIMID" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load Rows\Update Table\Which situation?"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Which situation?"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input].Columns[MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input].Columns[EXISTING_MOSTRECENTCONSTITUENCY]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCY"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]" />
+                        <inputColumn
+                          refId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]"
+                          cachedDataType="i4"
+                          cachedName="EXISTING_MOSTRECENTCONSTITUENCYFACTID"
+                          lineageId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load Rows\Update Table\Which situation?.Outputs[1) No active &quot;most recent constituent&quot; record exists]"
+                      description="Output 4 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="1) No active &quot;most recent constituent&quot; record exists"
+                      synchronousInputId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\Load Rows\Update Table\Find latest "most recent constituency" record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCYFACTID]}) ==  TRUE </property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(EXISTING_MOSTRECENTCONSTITUENCYFACTID) ==  TRUE </property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Which situation?.Outputs[2) Newest constituency different]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="2) Newest constituency different"
+                      synchronousInputId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">#{Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output].Columns[MOSTRECENTCONSTITUENCY]} != [REPLACENULL](#{Package\Load Rows\Update Table\Find latest "most recent constituency" record for each constituent.Outputs[Lookup Match Output].Columns[EXISTING_MOSTRECENTCONSTITUENCY]},"")</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">MOSTRECENTCONSTITUENCY != REPLACENULL(EXISTING_MOSTRECENTCONSTITUENCY,"")</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load Rows\Update Table\Which situation?.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[1) No active &quot;most recent constituent&quot; record exists]"
+                  endId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 1]"
+                  name="1) No active &quot;most recent constituent&quot; record exists"
+                  startId="Package\Load Rows\Update Table\Which situation?.Outputs[1) No active &quot;most recent constituent&quot; record exists]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[2) Newest constituency different]"
+                  endId="Package\Load Rows\Update Table\End date old record.Inputs[OLE DB Command Input]"
+                  name="2) Newest constituency different"
+                  startId="Package\Load Rows\Update Table\Which situation?.Outputs[2) Newest constituency different]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[Derived Column Output]"
+                  endId="Package\Load Rows\Update Table\Find Dim IDs for dates.Inputs[Derived Column Input]"
+                  name="Derived Column Output"
+                  startId="Package\Load Rows\Update Table\Derived columns.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[Derived Column Output1]"
+                  endId="Package\Load Rows\Update Table\Which situation?.Inputs[Conditional Split Input]"
+                  name="Derived Column Output"
+                  startId="Package\Load Rows\Update Table\Find Dim IDs for dates.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[Lookup Match Output]"
+                  endId="Package\Load Rows\Update Table\Derived columns.Inputs[Derived Column Input]"
+                  name="Lookup Match Output"
+                  startId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[OLE DB Command Output]"
+                  endId="Package\Load Rows\Update Table\Union All.Inputs[Union All Input 2]"
+                  name="OLE DB Command Output"
+                  startId="Package\Load Rows\Update Table\End date old record.Outputs[OLE DB Command Output]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[OLE DB Source Output]"
+                  endId="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent.Inputs[Lookup Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Load Rows\Update Table.Paths[Union All Output 1]"
+                  endId="Package\Load Rows\Update Table\Add new record.Inputs[OLE DB Destination Input]"
+                  name="Union All Output 1"
+                  startId="Package\Load Rows\Update Table\Union All.Outputs[Union All Output 1]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load Rows.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{C3A03124-AE6E-46B7-A0CD-8EDB565DF6FC}"
+          DTS:From="Package\Load Rows\Remove Indices"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Load Rows\Update Table" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load Rows.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{B6EB42A1-C36A-4ADE-8426-DC726FEE8140}"
+          DTS:From="Package\Load Rows\Update Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Load Rows\Add Indices" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Pre Processing"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{796EF57C-431E-4685-A8EC-D2B80241A587}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Pre Processing">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Pre Processing\Set ETL Run Variables"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Sets data window open and close datetime variables as well as the ETL Control ID"
+          DTS:DTSID="{8F2C6A0D-2F1D-47DF-ADB8-76F99BD64A75}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Set ETL Run Variables"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{99D56C28-B314-42F4-B9EC-22E9E0DBAF37}"
+              SQLTask:SqlStatementSource="EXEC BBDW.USP_ETL_BEGINLOAD &#xA;@CurrentDataWindowClose =NULL,&#xA;@ISPARENT=0,&#xA;@SSISPACKAGENAME =?,&#xA;@SSISPACKAGEPATH =?,&#xA;@SSISSTARTTIME =?,&#xA;@SSISUSERNAME=?,&#xA;@SSISMACHINENAME =?,&#xA;@SSISEXECUTIONINSTANCEGUID=?,&#xA;@CLEAR_INCOMPLETE_LOADS=0"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="ETLCONTROLID"
+                SQLTask:DtsVariableName="User::ETLControlID" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="DATAWINDOWOPEN"
+                SQLTask:DtsVariableName="User::DataWindowOpen" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="DATAWINDOWCLOSE"
+                SQLTask:DtsVariableName="User::DataWindowClose" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="VALIDSTARTDATEDIMID"
+                SQLTask:DtsVariableName="User::FirstDate" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="VALIDENDDATEDIMID"
+                SQLTask:DtsVariableName="User::LastDate" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="System::PackageName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::ETLDeploymentFolder"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="2"
+                SQLTask:DtsVariableName="System::StartTime"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="7"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="3"
+                SQLTask:DtsVariableName="System::UserName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="4"
+                SQLTask:DtsVariableName="System::MachineName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="5"
+                SQLTask:DtsVariableName="System::ExecutionInstanceGUID"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="72"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{28EF831A-78E3-45BA-853D-306475A68131}"
+      DTS:From="Package\Pre Processing"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load Rows" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{8CE0A207-D647-4F39-B06D-697ACF48D8C7}"
+      DTS:From="Package\Load Rows"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\ETL Post-Processing" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="155,54"
+          Id="Package\ETL Post-Processing\Mark LoadStatus  Complete"
+          TopLeft="18.6037735849057,8.47169811320759" />
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="188,95"
+          Size="188,139"
+          Id="Package\ETL Post-Processing"
+          TopLeft="614.584905660377,146.103773584906" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\Load Rows\Add Indices"
+          TopLeft="44.5849056603774,161.283018867925" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Load Rows\Remove Indices"
+          TopLeft="33.8679245283019,23.8490566037736" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Load Rows\Update Table"
+          TopLeft="38,92" />
+        <EdgeLayout
+          Id="Package\Load Rows.PrecedenceConstraints[Constraint]"
+          TopLeft="110.933962264151,65.8490566037736">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26.1509433962264"
+              Start="0,0"
+              End="0,18.6509433962264">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.6509433962264" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows.PrecedenceConstraints[Constraint 1]"
+          TopLeft="111.292452830189,134">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.283018867925"
+              Start="0,0"
+              End="0,19.783018867925">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.783018867925" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="237,258"
+          Size="237,302"
+          Id="Package\Load Rows"
+          TopLeft="333.811320754717,69.028301886792" />
+        <NodeLayout
+          Size="164,44"
+          Id="Package\Pre Processing\Set ETL Run Variables"
+          TopLeft="17.5471698113208,12.4716981132075" />
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="198,92"
+          Size="198,136"
+          Id="Package\Pre Processing"
+          TopLeft="74,144.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="272,216.264150943396">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="61.811320754717,0"
+              Start="0,0"
+              End="54.311320754717,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="54.311320754717,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="570.811320754717,217.816037735849">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="43.7735849056601,0"
+              Start="0,0"
+              End="36.2735849056601,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="36.2735849056601,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load Rows\Update Table">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="273,42"
+          Id="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent"
+          TopLeft="439,22" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Load Rows\Update Table\Which situation?"
+          TopLeft="500,307" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Load Rows\Update Table\Derived columns"
+          TopLeft="492,169" />
+        <NodeLayout
+          Size="390,42"
+          Id="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent"
+          TopLeft="384,98" />
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[OLE DB Source Output]"
+          TopLeft="577.25,64">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[Lookup Match Output]"
+          TopLeft="575.25,140">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,29"
+              Start="0,0"
+              End="0,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,4.9453125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Load Rows\Update Table\Add new record"
+          TopLeft="479,530" />
+        <NodeLayout
+          Size="187,42"
+          Id="Package\Load Rows\Update Table\Find Dim IDs for dates"
+          TopLeft="478,236" />
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[Derived Column Output]"
+          TopLeft="571.5,211">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25"
+              Start="0,0"
+              End="0,17.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[Derived Column Output1]"
+          TopLeft="575.25,278">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,29"
+              Start="0,0"
+              End="0,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Load Rows\Update Table\End date old record"
+          TopLeft="825,384" />
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[2) Newest constituency different]"
+          TopLeft="604,349">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="308,35"
+              Start="0,0"
+              End="308,27.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.2105263157895" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.2105263157895"
+                    Point2="0,14.2105263157895"
+                    Point3="4,14.2105263157895" />
+                  <mssgle:LineSegment
+                    End="304,14.2105263157895" />
+                  <mssgle:CubicBezierSegment
+                    Point1="304,14.2105263157895"
+                    Point2="308,14.2105263157895"
+                    Point3="308,18.2105263157895" />
+                  <mssgle:LineSegment
+                    End="308,27.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="81.58607421875,19.2105263157895,144.8278515625,11.658203125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="123,42"
+          Id="Package\Load Rows\Update Table\Union All"
+          TopLeft="499,443" />
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[1) No active &quot;most recent constituent&quot; record exists]"
+          TopLeft="557.25,349">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,94"
+              Start="0,0"
+              End="0,86.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,86.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-114.31947265625,37.4453125,228.6389453125,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[OLE DB Command Output]"
+          TopLeft="825,405">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-203,59"
+              Start="0,0"
+              End="-195.5,59">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-97.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-97.5,0"
+                    Point2="-101.5,0"
+                    Point3="-101.5,4" />
+                  <mssgle:LineSegment
+                    End="-101.5,55" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-101.5,55"
+                    Point2="-101.5,59"
+                    Point3="-105.5,59" />
+                  <mssgle:LineSegment
+                    End="-195.5,59" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Rows\Update Table.Paths[Union All Output 1]"
+          TopLeft="558.5,485">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45"
+              Start="0,0"
+              End="0,37.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Rows\Update Table\Retrieve most recent constituencies for each constituent">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Rows\Update Table\Find latest &quot;most recent constituency&quot; record for each constituent">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load Rows\Update Table\Add new record">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
